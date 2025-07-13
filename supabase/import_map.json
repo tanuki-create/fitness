@@ -1,0 +1,6 @@
+{
+  "imports": {
+    "@google/generative-ai": "https://esm.sh/@google/generative-ai@0.14.1",
+    "https://deno.land/x/google_generative_ai@0.3.1/mod.ts": "https://esm.sh/@google/generative-ai@0.14.1"
+  }
+} 
