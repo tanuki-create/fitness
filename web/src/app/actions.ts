@@ -292,3 +292,34 @@ export async function saveOnboardingData({
   revalidatePath("/");
   return { error: null };
 } 
+
+interface ChatMessage {
+  role: "user" | "assistant";
+  content: string;
+}
+
+export async function chatWithAi(messages: ChatMessage[]) {
+  const supabase = createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (!user) {
+    return { error: "User not authenticated" };
+  }
+  
+  try {
+    const { data, error } = await supabase.functions.invoke("chat-with-ai", {
+      body: { messages, userId: user.id },
+    });
+
+    if (error) {
+      throw new Error(error.message);
+    }
+
+    return { reply: data.reply };
+  } catch (e) {
+    if (e instanceof Error) {
+      return { error: `AIチャットでエラーが発生しました: ${e.message}` };
+    }
+    return { error: 'AIチャットで不明なエラーが発生しました。' };
+  }
+} 

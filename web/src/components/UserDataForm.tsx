@@ -22,7 +22,7 @@ export interface UserData {
   inbodyScore: number | "";
 }
 
-// A reusable component for the form fields
+  // A reusable component for the form fields
 const UserProfileForm = memo(function UserProfileForm({
   readOnly,
   userData,
@@ -39,8 +39,8 @@ const UserProfileForm = memo(function UserProfileForm({
           基本情報
         </legend>
         <div className="space-y-2">
-          <Label htmlFor="name">名前</Label>
-          <Input
+            <Label htmlFor="name">名前</Label>
+            <Input
             id="name"
             name="name"
             value={userData.name}
@@ -48,58 +48,58 @@ const UserProfileForm = memo(function UserProfileForm({
             placeholder="山田 太郎"
             required
             readOnly={readOnly}
-          />
+            />
         </div>
         <div className="grid grid-cols-3 gap-4">
-          <div className="space-y-2">
+            <div className="space-y-2">
             <Label htmlFor="age">年齢</Label>
             <Input
-              id="age"
-              name="age"
-              type="number"
-              value={userData.age}
-              onChange={handleChange}
-              placeholder="30"
-              required
-              readOnly={readOnly}
+                id="age"
+                name="age"
+                type="number"
+                value={userData.age}
+                onChange={handleChange}
+                placeholder="30"
+                required
+                readOnly={readOnly}
             />
-          </div>
-          <div className="space-y-2">
+            </div>
+            <div className="space-y-2">
             <Label htmlFor="weight">体重 (kg)</Label>
             <Input
-              id="weight"
-              name="weight"
-              type="number"
-              value={userData.weight}
-              onChange={handleChange}
-              placeholder="70"
-              required
-              readOnly={readOnly}
+                id="weight"
+                name="weight"
+                type="number"
+                value={userData.weight}
+                onChange={handleChange}
+                placeholder="70"
+                required
+                readOnly={readOnly}
             />
-          </div>
-          <div className="space-y-2">
+            </div>
+            <div className="space-y-2">
             <Label htmlFor="height">身長 (cm)</Label>
             <Input
-              id="height"
-              name="height"
-              type="number"
-              value={userData.height}
-              onChange={handleChange}
-              placeholder="175"
-              required
-              readOnly={readOnly}
+                id="height"
+                name="height"
+                type="number"
+                value={userData.height}
+                onChange={handleChange}
+                placeholder="175"
+                required
+                readOnly={readOnly}
             />
-          </div>
+            </div>
         </div>
       </fieldset>
-
+      
       <fieldset className="space-y-4">
         <legend className="text-base font-medium text-foreground">
           身体データ（任意）
         </legend>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-          <div className="space-y-2">
-            <Label htmlFor="skeletalMuscleMass">筋肉量 (kg)</Label>
+             <div className="space-y-2">
+                <Label htmlFor="skeletalMuscleMass">筋肉量 (kg)</Label>
             <Input
               id="skeletalMuscleMass"
               name="skeletalMuscleMass"
@@ -108,9 +108,9 @@ const UserProfileForm = memo(function UserProfileForm({
               onChange={handleChange}
               readOnly={readOnly}
             />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="bodyFatPercentage">体脂肪率 (%)</Label>
+            </div>
+            <div className="space-y-2">
+                <Label htmlFor="bodyFatPercentage">体脂肪率 (%)</Label>
             <Input
               id="bodyFatPercentage"
               name="bodyFatPercentage"
@@ -119,9 +119,9 @@ const UserProfileForm = memo(function UserProfileForm({
               onChange={handleChange}
               readOnly={readOnly}
             />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="bodyFatMass">体脂肪量 (kg)</Label>
+            </div>
+            <div className="space-y-2">
+                <Label htmlFor="bodyFatMass">体脂肪量 (kg)</Label>
             <Input
               id="bodyFatMass"
               name="bodyFatMass"
@@ -130,9 +130,9 @@ const UserProfileForm = memo(function UserProfileForm({
               onChange={handleChange}
               readOnly={readOnly}
             />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="smi">SMI (骨格筋指数)</Label>
+            </div>
+            <div className="space-y-2">
+                <Label htmlFor="smi">SMI (骨格筋指数)</Label>
             <Input
               id="smi"
               name="smi"
@@ -141,9 +141,9 @@ const UserProfileForm = memo(function UserProfileForm({
               onChange={handleChange}
               readOnly={readOnly}
             />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="bmr">基礎代謝量 (kcal)</Label>
+            </div>
+            <div className="space-y-2">
+                <Label htmlFor="bmr">基礎代謝量 (kcal)</Label>
             <Input
               id="bmr"
               name="bmr"
@@ -152,9 +152,9 @@ const UserProfileForm = memo(function UserProfileForm({
               onChange={handleChange}
               readOnly={readOnly}
             />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="visceralFatLevel">内臓脂肪レベル</Label>
+            </div>
+            <div className="space-y-2">
+                <Label htmlFor="visceralFatLevel">内臓脂肪レベル</Label>
             <Input
               id="visceralFatLevel"
               name="visceralFatLevel"
@@ -163,9 +163,9 @@ const UserProfileForm = memo(function UserProfileForm({
               onChange={handleChange}
               readOnly={readOnly}
             />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="inbodyScore">InBodyスコア</Label>
+            </div>
+            <div className="space-y-2">
+                <Label htmlFor="inbodyScore">InBodyスコア</Label>
             <Input
               id="inbodyScore"
               name="inbodyScore"
@@ -174,7 +174,7 @@ const UserProfileForm = memo(function UserProfileForm({
               onChange={handleChange}
               readOnly={readOnly}
             />
-          </div>
+            </div>
         </div>
       </fieldset>
     </div>
