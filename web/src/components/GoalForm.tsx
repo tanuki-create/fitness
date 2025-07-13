@@ -70,7 +70,7 @@ export function GoalForm({ onNext, onBack }: { onNext: (data: GoalData) => void;
             type="number"
             value={goalData.target_value}
             onChange={(e) => handleChange("target_value", e.target.value)}
-            placeholder="例: 5 (5kg減の場合)"
+            placeholder="例: -5 (5kg減の場合)"
             required
           />
         </div>
