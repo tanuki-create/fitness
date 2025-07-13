@@ -4,11 +4,11 @@ import { useState } from "react";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Button } from "./ui/button";
-import { ImageUploader } from "./ImageUploader";
+import { ImageUploader, ExtractedData } from "./ImageUploader";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { PencilIcon } from "lucide-react";
 
-interface UserData {
+export interface UserData {
   name: string;
   age: number | "";
   weight: number | "";
@@ -47,7 +47,7 @@ export function UserDataForm({ onNext }: { onNext: (data: UserData) => void }) {
     }));
   };
 
-  const handleUploadComplete = (extractedData: any) => {
+  const handleUploadComplete = (extractedData: ExtractedData) => {
     setUserData({
       name: extractedData.name || "",
       age: extractedData.age || "",

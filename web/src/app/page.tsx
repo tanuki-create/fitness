@@ -1,17 +1,22 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { UserDataForm } from "@/components/UserDataForm";
-import { GoalForm } from "@/components/GoalForm";
+import { UserDataForm, UserData as FormUserData } from "@/components/UserDataForm";
+import { GoalForm, GoalData as FormGoalData } from "@/components/GoalForm";
 import { AiPlanDisplay, Plan } from "@/components/AiPlanDisplay";
 import { Button } from "@/components/ui/button";
 import { MainDashboard } from "@/components/MainDashboard";
 import { saveOnboardingData } from "@/app/actions";
 import { createClient } from "@/lib/supabase/client";
+import { Database } from "@/lib/supabase/database.types";
+
+// Types for data to be sent to server
+type DbUserData = Omit<Database['public']['Tables']['profiles']['Insert'], 'id' | 'created_at' | 'updated_at'>;
+type DbGoalData = Omit<Database['public']['Tables']['goals']['Insert'], 'user_id' | 'created_at' | 'is_active' | 'id'>;
 
 
 // Placeholder components for each step
-function UserDataStep({ onNext }: { onNext: (data: any) => void }) {
+function UserDataStep({ onNext }: { onNext: (data: FormUserData) => void }) {
   return (
     <div>
       <h2 className="text-2xl font-bold mb-4">ステップ1：あなたの情報を入力</h2>
@@ -20,7 +25,7 @@ function UserDataStep({ onNext }: { onNext: (data: any) => void }) {
   );
 }
 
-function GoalStep({ onNext, onBack }: { onNext: (data: any) => void; onBack: () => void }) {
+function GoalStep({ onNext, onBack }: { onNext: (data: FormGoalData) => void; onBack: () => void }) {
   return (
     <div>
       <h2 className="text-2xl font-bold mb-4">ステップ2：目標を設定</h2>
@@ -37,8 +42,8 @@ function PlanStep({
 }: {
   onNext: (plan: Plan) => void;
   onBack: () => void;
-  userData: any;
-  goalData: any;
+  userData: DbUserData;
+  goalData: DbGoalData;
 }) {
   const [isLoading, setIsLoading] = useState(true);
   const [plans, setPlans] = useState<Plan[]>([]);
@@ -58,8 +63,12 @@ function PlanStep({
           throw new Error(funcError.message);
         }
         setPlans(data.plans);
-      } catch (e: any) {
-        setError(e.message || 'An unknown error occurred');
+      } catch (e) {
+        let message = 'An unknown error occurred';
+        if (e instanceof Error) {
+            message = e.message;
+        }
+        setError(message);
         console.error("Error generating plans:", e);
       } finally {
         setIsLoading(false);
@@ -96,8 +105,8 @@ function PlanStep({
 
 export default function Home() {
   const [step, setStep] = useState(1);
-  const [userData, setUserData] = useState<any>({});
-  const [goalData, setGoalData] = useState<any>({});
+  const [userData, setUserData] = useState<DbUserData | null>(null);
+  const [goalData, setGoalData] = useState<DbGoalData | null>(null);
   const [selectedPlan, setSelectedPlan] = useState<Plan | null>(null);
   const [isOnboardingComplete, setIsOnboardingComplete] = useState(false);
 
@@ -119,18 +128,37 @@ export default function Home() {
   }, []);
   */
 
-  const handleNextFromStep1 = (data: any) => {
-    setUserData(data);
+  const handleNextFromStep1 = (data: FormUserData) => {
+    const cleanedData: DbUserData = {
+      name: data.name,
+      age: data.age === "" ? null : Number(data.age),
+      weight: data.weight === "" ? null : Number(data.weight),
+      height: data.height === "" ? null : Number(data.height),
+    };
+    setUserData(cleanedData);
     setStep(2);
   };
 
-  const handleNextFromStep2 = (data: any) => {
-    setGoalData(data);
+  const handleNextFromStep2 = (data: FormGoalData) => {
+    if (data.target_value === "") {
+        alert("目標値を入力してください。");
+        return;
+    }
+    const cleanedData: DbGoalData = {
+      ...data,
+      target_value: Number(data.target_value),
+    };
+    setGoalData(cleanedData);
     setStep(3);
   };
 
   const handlePlanSelected = async (plan: Plan) => {
     setSelectedPlan(plan);
+    
+    if (!userData || !goalData) {
+      alert("ユーザーデータまたは目標データが見つかりません。");
+      return;
+    }
     // Save all data to the database
     const { error } = await saveOnboardingData({ userData, goalData, selectedPlan: plan });
     if (error) {

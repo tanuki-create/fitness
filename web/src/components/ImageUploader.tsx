@@ -10,7 +10,21 @@ type FileWithPreview = File & {
   preview: string
 }
 
-export function ImageUploader({ onUploadComplete }: { onUploadComplete: (data: any) => void }) {
+export type ExtractedData = {
+  name?: string;
+  age?: number;
+  height?: number;
+  weight?: number;
+  bodyFatPercentage?: number;
+  skeletalMuscleMass?: number;
+  bodyFatMass?: number;
+  smi?: number;
+  bmr?: number;
+  visceralFatLevel?: number;
+  inbodyScore?: number;
+}
+
+export function ImageUploader({ onUploadComplete }: { onUploadComplete: (data: ExtractedData) => void }) {
   const [isPending, startTransition] = useTransition();
   const [files, setFiles] = useState<FileWithPreview[]>([]);
 

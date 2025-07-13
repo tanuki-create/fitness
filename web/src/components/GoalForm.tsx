@@ -15,7 +15,7 @@ import { Button } from "./ui/button";
 // 仮でshadcnのDatePickerの代わりに通常のinput[type=date]を使用します
 // 必要であれば、別途DatePickerコンポーネントをインストール・設定します
 
-interface GoalData {
+export interface GoalData {
   goal_type: string;
   target_value: number | "";
   target_date: string;

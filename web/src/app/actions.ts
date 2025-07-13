@@ -3,6 +3,10 @@
 import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
 import { v4 as uuidv4 } from 'uuid';
+import { Database } from '@/lib/supabase/database.types';
+
+type ProfilesInsert = Database['public']['Tables']['profiles']['Insert'];
+type GoalsInsert = Database['public']['Tables']['goals']['Insert'];
 
 export async function logWorkout(formData: FormData) {
   const supabase = createClient()
@@ -108,9 +112,11 @@ export async function logWorkout(formData: FormData) {
     }
 
     return { error: null, advice: adviceData.advice }
-  } catch (e: any) {
+  } catch (e) {
+    let message = 'Unknown error';
+    if (e instanceof Error) message = e.message;
     console.error('Error invoking generate-advice function:', e)
-    return { error: `Error getting advice: ${e.message}`, advice: null }
+    return { error: `Error getting advice: ${message}`, advice: null }
   }
 }
 
@@ -189,9 +195,11 @@ export async function processInBodyImage(formData: FormData) {
     
     return { success: true, data: extractedData };
     
-  } catch (e: any) {
+  } catch (e) {
+    let message = 'Unknown error';
+    if (e instanceof Error) message = e.message;
     console.error("Error processing InBody image:", e);
-    return { success: false, message: `Error processing image: ${e.message}` };
+    return { success: false, message: `Error processing image: ${message}` };
   }
 }
 
@@ -207,8 +215,8 @@ export async function saveOnboardingData({
   goalData,
   selectedPlan,
 }: {
-  userData: any;
-  goalData: any;
+  userData: Omit<ProfilesInsert, 'id' | 'created_at' | 'updated_at'>;
+  goalData: Omit<GoalsInsert, 'user_id' | 'created_at' | 'is_active' | 'id'>;
   selectedPlan: PlanForOnboarding;
 }) {
   const supabase = createClient()

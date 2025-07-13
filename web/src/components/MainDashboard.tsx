@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { TrainingForm } from "./TrainingForm";
+import { TrainingForm, WorkoutData } from "./TrainingForm";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "./ui/card";
 import { logWorkout } from "@/app/actions";
 import { createClient } from "@/lib/supabase/client";
@@ -71,13 +71,13 @@ export function MainDashboard({ selectedPlan }: { selectedPlan: Plan }) {
     fetchHistory();
   }, []);
 
-  const handleWorkoutSubmit = async (data: any) => {
+  const handleWorkoutSubmit = async (data: WorkoutData) => {
     console.log("Workout logged:", data);
     
     // Create a FormData object to send to the server action
     const formData = new FormData();
     Object.keys(data).forEach(key => {
-      formData.append(key, data[key]);
+      formData.append(key, data[key as keyof WorkoutData]);
     });
 
     const { error, advice } = await logWorkout(formData);

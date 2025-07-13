@@ -13,16 +13,15 @@ import {
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { logWorkout } from '@/app/actions'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 
-export function TrainingForm({ onSubmit }: { onSubmit: (data: any) => void }) {
+export interface WorkoutData {
+  exercise: string;
+  sets: string;
+  reps: string;
+  weight: string;
+}
+
+export function TrainingForm({ onSubmit }: { onSubmit: (data: WorkoutData) => void }) {
   const [open, setOpen] = useState(false)
   const [exercise, setExercise] = useState("");
   const [sets, setSets] = useState("");
@@ -36,7 +35,7 @@ export function TrainingForm({ onSubmit }: { onSubmit: (data: any) => void }) {
       alert("すべての項目を入力してください。");
       return;
     }
-    const formData = { exercise, sets, reps, weight };
+    const formData: WorkoutData = { exercise, sets, reps, weight };
     console.log(formData);
     onSubmit(formData); // Pass data to the parent component
     // Reset form
