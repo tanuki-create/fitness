@@ -101,6 +101,9 @@ export default function Home() {
   const [selectedPlan, setSelectedPlan] = useState<Plan | null>(null);
   const [isOnboardingComplete, setIsOnboardingComplete] = useState(false);
 
+  // This useEffect in layout.tsx now handles anonymous sign-in globally.
+  // We can remove the local one to avoid redundancy.
+  /*
   useEffect(() => {
     const supabase = createClient();
     const signIn = async () => {
@@ -114,6 +117,7 @@ export default function Home() {
     };
     signIn();
   }, []);
+  */
 
   const handleNextFromStep1 = (data: any) => {
     setUserData(data);
@@ -141,20 +145,26 @@ export default function Home() {
     setStep((prev) => prev - 1);
   };
   
-  const handleStartOver = () => {
-    setUserData(null);
-    setGoalData(null);
-    setStep(1);
-    setIsOnboardingComplete(false);
-  }
+  const handleStartOver = async () => {
+    const supabase = createClient();
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+        console.error('Error signing out:', error);
+        alert('サインアウト中にエラーが発生しました。');
+    } else {
+        // Force a reload to clear all state and get a new anonymous session
+        window.location.reload();
+    }
+  };
 
   return (
     <div className="min-h-screen bg-background text-foreground">
       <header className="flex justify-between items-center p-4 border-b">
         <h1 className="text-2xl font-bold text-primary">Fitness AI</h1>
-        {isOnboardingComplete && (
-          <Button variant="outline" onClick={handleStartOver}>最初からやり直す</Button>
-        )}
+        {/* Always show the start over button so user can reset anytime */}
+        <Button variant="outline" onClick={handleStartOver}>
+          新しいユーザーでやり直す
+        </Button>
       </header>
       <main className="container mx-auto p-4 md:p-8 flex justify-center items-start">
         <div className="w-full max-w-4xl">
